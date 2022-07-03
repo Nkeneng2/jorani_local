@@ -65,16 +65,11 @@ class Reports extends CI_Controller {
     }
 
     /**
-     * Landing page of the shipped-in balance
-     * report
-     * @param string $refTmp Optional Unix
-     *     timestamp (set a date of reference for
-     *     the report).
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * Landing page of the shipped-in balance report
+     * @param string $refTmp Optional Unix timestamp (set a date of reference for the report).
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function balance($refTmp = NULL)
-    {
+    public function balance($refTmp = NULL) {
         $this->auth->checkIfOperationIsAllowed('native_report_balance');
         $data = getUserContext($this);
         $refDate = date("Y-m-d");
@@ -199,14 +194,11 @@ class Reports extends CI_Controller {
     }
 
     /**
-     * Landing page of the shipped-in leaves
-     * report
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * Landing page of the shipped-in leaves report
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      * @since 0.4.3
      */
-    public function leaves()
-    {
+    public function leaves() {
         $this->auth->checkIfOperationIsAllowed('native_report_leaves');
         $data = getUserContext($this);
         $data['title'] = lang('reports_leaves_title');

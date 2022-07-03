@@ -59,8 +59,7 @@ class Leaves_model extends CI_Model {
         return $this->db->get()->result_array();
     }
 
-    public function getSubLeavesOfEmployee($employee, $id)
-    {
+    public function getSubLeavesOfEmployee($employee, $id) {
         $this->db->select('leaves.*');
         $this->db->select('status.id as status, status.name as status_name');
         $this->db->select('types.name as type_name');
@@ -77,13 +76,11 @@ class Leaves_model extends CI_Model {
      * Get the list of history of an employee
      * @param int $employee Id of the employee
      * @return array list of records
-     * @author Emilien NICOLAS
-     *     <milihhard1996@gmail.com>
+     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function getLeavesOfEmployeeWithHistory($employee)
-    {
-        $employee = intval($employee);
-        return $this->db->query("SELECT leaves.*, status.name as status_name, types.name as type_name, lastchange.date as change_date, requested.date as request_date
+    public function getLeavesOfEmployeeWithHistory($employee){
+      $employee = intval($employee);
+      return $this->db->query("SELECT leaves.*, status.name as status_name, types.name as type_name, lastchange.date as change_date, requested.date as request_date
         FROM `leaves`
         inner join status ON leaves.status = status.id
         inner join types ON leaves.type = types.id
@@ -101,8 +98,7 @@ class Leaves_model extends CI_Model {
         WHERE leaves.employee = $employee")->result_array();
     }
 
-    public function getSubLeavesOfEmployeeWithHistory($employee, $id)
-    {
+    public function getSubLeavesOfEmployeeWithHistory($employee, $id){
         $employee = intval($employee);
         return $this->db->query("SELECT leaves.*, status.name as status_name, types.name as type_name, lastchange.date as change_date, requested.date as request_date
           FROM `leaves`
@@ -120,19 +116,16 @@ class Leaves_model extends CI_Model {
             GROUP BY id
           ) requested ON leaves.id = requested.id
           WHERE (leaves.employee = $employee AND leaves.parent_leave_id = $id)")->result_array();
-    }
+      }
 
     /**
-     * Return a list of Accepted leaves between
-     * two dates and for a given employee
+     * Return a list of Accepted leaves between two dates and for a given employee
      * @param int $employee ID of the employee
      * @param string $start Start date
      * @param string $end End date
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function getAcceptedLeavesBetweenDates($employee, $start, $end)
-    {
+    public function getAcceptedLeavesBetweenDates($employee, $start, $end) {
         $this->db->select('leaves.*, types.name as type');
         $this->db->from('leaves');
         $this->db->join('status', 'leaves.status = status.id');
@@ -357,7 +350,7 @@ class Leaves_model extends CI_Model {
                 $summary[$entitlement['type_name']][3] = $entitlement['type_id'];
                 $summary[$entitlement['type_name']][1] = (float) $entitlement['entitled'];
             }
-
+            
             //List all planned leaves in a third column
             //planned leave requests are not deducted from credit
             foreach ($entitlements as $entitlement) {
@@ -492,15 +485,11 @@ class Leaves_model extends CI_Model {
 
     /**
      * Create a leave request
-     * @param int $employeeId Identifier of the
-     *     employee
-     * @return int id of the newly created leave
-     *     request into the db
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * @param int $employeeId Identifier of the employee
+     * @return int id of the newly created leave request into the db
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function setLeaves($employeeId, $idStatus = null)
-    {
+    public function setLeaves($employeeId, $idStatus = null) {
         $data = array(
             'startdate' => $this->input->post('startdate'),
             'startdatetype' => $this->input->post('startdatetype'),
@@ -523,9 +512,7 @@ class Leaves_model extends CI_Model {
 
         return $newId;
     }
-
-    public function setLeavesFreeDay($employeeId, $idStatus = null, $parentBoolean = false)
-    {
+    public function setLeavesFreeDay($employeeId, $idStatus = null, $parentBoolean = false) {
         $data = array(
             'startdate' => $this->input->post('startdate'),
             'enddate' => $this->input->post('enddate'),
@@ -548,8 +535,7 @@ class Leaves_model extends CI_Model {
         return $newId;
     }
 
-    public function setSubLeavesFreeDay($employeeId, $idStatus = null, $startDate = null, $endDate = null, $idLeave = null)
-    {
+    public function setSubLeavesFreeDay($employeeId, $idStatus=null, $startDate = null, $endDate = null, $idLeave = null) {
         $data = array(
             'startdate' => $startDate,
             'enddate' => $endDate,
@@ -571,7 +557,7 @@ class Leaves_model extends CI_Model {
 
         return $newId;
     }
-
+    
 
     /**
      * Create the same leave request for a list of employees
@@ -753,9 +739,7 @@ class Leaves_model extends CI_Model {
             $this->history_model->setHistory(2, 'leaves', $id, $this->session->userdata('id'));
         }
     }
-
-    public function closeRequestTreated($id)
-    {
+    public function closeRequestTreated($id){
         $data = array(
             'sub_leaves_treated' => 1
         );
@@ -768,9 +752,7 @@ class Leaves_model extends CI_Model {
             $this->history_model->setHistory(2, 'leaves', $id, $this->session->userdata('id'));
         }
     }
-
-    public function verifySubLeavesExists($id)
-    {
+    public function verifySubLeavesExists($id) {
         $this->db->select('leaves.*');
         //$this->db->join('types', 'leaves.type = types.id');
         $this->db->where('leaves.parent_leave_id', $id);
@@ -785,8 +767,7 @@ class Leaves_model extends CI_Model {
         }
     }
 
-    public function getOtherSubLeavesExists($id)
-    {
+    public function getOtherSubLeavesExists($id) {
         $this->db->select('leaves.*');
         //$this->db->join('types', 'leaves.type = types.id');
         $this->db->where('leaves.parent_leave_id', $id);
@@ -798,26 +779,23 @@ class Leaves_model extends CI_Model {
     }
 
     /**
-     * Switch the status of a leave request and a
-     * comment. You may use one of the constants
+     * Switch the status of a leave request and a comment. You may use one of the constants
      * listed into config/constants.php
      * @param int $id leave request identifier
      * @param int $status Next Status
      * @param int $comment New comment
-     * @author Emilien NICOLAS
-     *     <milihhard1996@gmail.com>
+     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function switchStatusAndComment($id, $status, $comment)
-    {
+    public function switchStatusAndComment($id, $status, $comment) {
         $json_parsed = $this->getCommentsLeave($id);
         $commentObject = new stdClass;
         $commentObject->type = "comment";
         $commentObject->author = $this->session->userdata('id');
         $commentObject->value = $comment;
         $commentObject->date = date("Y-n-j");
-        if (isset($json_parsed)) {
-            array_push($json_parsed->comments, $commentObject);
-        } else {
+        if (isset($json_parsed)){
+          array_push($json_parsed->comments, $commentObject);
+        }else {
             if ($json_parsed == null) {
                 $json_parsed = new stdClass();
                 $json_parsed->comments = array($commentObject);
@@ -829,10 +807,10 @@ class Leaves_model extends CI_Model {
         $comment_change->type = "change";
         $comment_change->status_number = $status;
         $comment_change->date = date("Y-n-j");
-        if (isset($json_parsed)) {
-            array_push($json_parsed->comments, $comment_change);
-        } else {
-            $json_parsed->comments = array($comment_change);
+        if (isset($json_parsed)){
+          array_push($json_parsed->comments, $comment_change);
+        }else {
+          $json_parsed->comments = array($comment_change);
         }
         $json = json_encode($json_parsed);
         $data = array(
@@ -883,7 +861,7 @@ class Leaves_model extends CI_Model {
         $this->db->order_by('startdate', 'desc');
         $this->db->limit(1024);  //Security limit
         $events = $this->db->get('leaves')->result();
-
+        //"<script>console.log('Debug: " . json_encode($events) . "' );</script>";
         $jsonevents = array();
         foreach ($events as $entry) {
 
@@ -920,18 +898,44 @@ class Leaves_model extends CI_Model {
                 case 3: $color = '#468847'; break;  // Accepted
                 case 4: $color = '#ff0000'; break;  // Rejected
             }
-
-            $jsonevents[] = array(
-                'id' => $entry->id,
-                'title' => $entry->type,
-                'imageurl' => $imageUrl,
-                'start' => $startdate,
-                'color' => $color,
-                'allDay' => $allDay,
-                'end' => $enddate,
-                'startdatetype' => $startdatetype,
-                'enddatetype' => $enddatetype
-            );
+            if ($entry->free_day) {
+                $dateEndCurrent = new DateTime($enddate);
+                $dateEndCurrent->modify('+1 day');
+                $period = new DatePeriod(
+                    new DateTime($startdate),
+                    new DateInterval('P1D'),
+                    $dateEndCurrent
+                );
+                foreach ($period as $key => $value) {
+                    if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $entry->free_day) {
+                        $jsonevents[] = array(
+                            'id' => $entry->id,
+                            'title' => $entry->type,
+                            'imageurl' => $imageUrl,
+                            'start' => $value->format('Y-m-d'),
+                            'color' => $color,
+                            'allDay' => $allDay,
+                            'end' => $value->format('Y-m-d'),
+                            'freeDay' => $entry->free_day,
+                            'startdatetype' => $startdatetype,
+                            'enddatetype' => $enddatetype
+                        );
+                    }      
+                    }
+                }else{
+                    $jsonevents[] = array(
+                        'id' => $entry->id,
+                        'title' => $entry->type,
+                        'imageurl' => $imageUrl,
+                        'start' => $startdate,
+                        'color' => $color,
+                        'allDay' => $allDay,
+                        'end' => $enddate,
+                        'freeDay' => $entry->free_day,
+                        'startdatetype' => $startdatetype,
+                        'enddatetype' => $enddatetype
+                    );
+                }
         }
         return json_encode($jsonevents);
     }
@@ -988,18 +992,44 @@ class Leaves_model extends CI_Model {
                 case 3: $color = '#468847'; break;  // Accepted
                 case 4: $color = '#ff0000'; break;  // Rejected
             }
-
-            $jsonevents[] = array(
-                'id' => $entry->id,
-                'title' => $entry->firstname .' ' . $entry->lastname,
-                'imageurl' => $imageUrl,
-                'start' => $startdate,
-                'color' => $color,
-                'allDay' => $allDay,
-                'end' => $enddate,
-                'startdatetype' => $startdatetype,
-                'enddatetype' => $enddatetype
-            );
+            if ($entry->free_day) {
+                $dateEndCurrent = new DateTime($enddate);
+                $dateEndCurrent->modify('+1 day');
+                $period = new DatePeriod(
+                    new DateTime($startdate),
+                    new DateInterval('P1D'),
+                    $dateEndCurrent
+                );
+                foreach ($period as $key => $value) {
+                    if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $entry->free_day) {
+                        $jsonevents[] = array(
+                            'id' => $entry->id,
+                            'title' => $entry->firstname .' ' . $entry->lastname,
+                            'imageurl' => $imageUrl,
+                            'start' => $value->format('Y-m-d'),
+                            'color' => $color,
+                            'allDay' => $allDay,
+                            'end' => $value->format('Y-m-d'),
+                            'freeDay' => $entry->free_day,
+                            'startdatetype' => $startdatetype,
+                            'enddatetype' => $enddatetype
+                        );
+                    }      
+                    }
+                }else{
+                    $jsonevents[] = array(
+                        'id' => $entry->id,
+                        'title' => $entry->firstname .' ' . $entry->lastname,
+                        'imageurl' => $imageUrl,
+                        'start' => $startdate,
+                        'color' => $color,
+                        'allDay' => $allDay,
+                        'end' => $enddate,
+                        'freeDay' => $entry->free_day,
+                        'startdatetype' => $startdatetype,
+                        'enddatetype' => $enddatetype
+                    );
+                }
         }
         return json_encode($jsonevents);
     }
@@ -1167,18 +1197,42 @@ class Leaves_model extends CI_Model {
             }
 
             //Create the JSON representation of the event
-            $jsonevents[] = array(
-                'id' => $entry->id,
-                'title' => $title,
-                'imageurl' => $imageUrl,
-                'start' => $startdate,
-                'color' => $color,
-                'allDay' => $allDay,
-                'end' => $enddate,
-                'startdatetype' => $startdatetype,
-                'enddatetype' => $enddatetype,
-                'url' => $url
-            );
+            if ($entry->free_day) {
+                $dateEndCurrent = new DateTime($enddate);
+                $dateEndCurrent->modify('+1 day');
+                $period = new DatePeriod(
+                    new DateTime($startdate),
+                    new DateInterval('P1D'),
+                    $dateEndCurrent
+                );
+                foreach ($period as $key => $value) {
+                    if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $entry->free_day) {
+                        $jsonevents[] = array(
+                            'id' => $entry->id,
+                            'title' => $title,
+                            'imageurl' => $imageUrl,
+                            'start' => $value->format('Y-m-d'),
+                            'color' => $color,
+                            'allDay' => $allDay,
+                            'end' => $value->format('Y-m-d'),
+                            'startdatetype' => $startdatetype,
+                            'enddatetype' => $enddatetype
+                        );
+                    }      
+                    }
+                }else{
+                    $jsonevents[] = array(
+                        'id' => $entry->id,
+                        'title' => $title,
+                        'imageurl' => $imageUrl,
+                        'start' => $startdate,
+                        'color' => $color,
+                        'allDay' => $allDay,
+                        'end' => $enddate,
+                        'startdatetype' => $startdatetype,
+                        'enddatetype' => $enddatetype
+                    );
+                }
         }
         return json_encode($jsonevents);
     }
@@ -1350,8 +1404,7 @@ class Leaves_model extends CI_Model {
         return $query->result_array();
     }
 
-    public function getSubLeavesRequestedToManager($manager, $all = FALSE, $id)
-    {
+    public function getSubLeavesRequestedToManager($manager, $all = FALSE, $id) {
         $this->load->model('delegations_model');
         $ids = $this->delegations_model->listManagersGivingDelegation($manager);
         $this->db->select('leaves.id as leave_id, users.*, leaves.*, types.name as type_label');
@@ -1373,24 +1426,21 @@ class Leaves_model extends CI_Model {
         $this->db->where('leaves.parent_leave_id', $id);
         $this->db->order_by('leaves.startdate', 'desc');
         $query = $this->db->get('leaves');
-        function array_filt($array, $filterValue)
-        {
-            $thisarray = array();
-            foreach ($array as $value)
-                if (
+        function array_filt($array, $filterValue){
+            $thisarray = array ();
+            foreach($array as $value)
+                if(
                     $value['parent_leave_id'] == $filterValue
                 )
-                    $thisarray[] = $value;
+                $thisarray[] = $value;
             return $thisarray;
         }
-
         $req = $query->result_array();
         $tab = array_filt($req, $id);
         return $tab;
     }
 
-    public function getSubLeavesDetailsRequestedToManager($manager, $all = FALSE, $id)
-    {
+    public function getSubLeavesDetailsRequestedToManager($manager, $all = FALSE, $id) {
         $this->load->model('delegations_model');
         $ids = $this->delegations_model->listManagersGivingDelegation($manager);
         $this->db->select('leaves.id as leave_id, users.*, leaves.*, types.name as type_label');
@@ -1412,17 +1462,15 @@ class Leaves_model extends CI_Model {
         $this->db->where('leaves.parent_leave_id', $id);
         $this->db->order_by('leaves.startdate', 'desc');
         $query = $this->db->get('leaves');
-        function array_filt($array, $filterValue)
-        {
-            $thisarray = array();
-            foreach ($array as $value)
-                if (
+        function array_filt($array, $filterValue){
+            $thisarray = array ();
+            foreach($array as $value)
+                if(
                     $value['parent_leave_id'] == $filterValue
                 )
-                    $thisarray[] = $value;
+                $thisarray[] = $value;
             return $thisarray;
         }
-
         $req = $query->result_array();
         $tab = array_filt($req, $id);
         return $tab;
@@ -1431,17 +1479,14 @@ class Leaves_model extends CI_Model {
     /**
      * Get the list of history of an employee
      * @param int $manager Id of the employee
-     * @param bool $all TRUE all requests, FALSE
-     *     otherwise
+     * @param bool $all TRUE all requests, FALSE otherwise
      * @return array list of records
-     * @author Emilien NICOLAS
-     *     <milihhard1996@gmail.com>
+     * @author Emilien NICOLAS <milihhard1996@gmail.com>
      */
-    public function getLeavesRequestedToManagerWithHistory($manager, $all = FALSE)
-    {
-        $this->load->model('delegations_model');
-        $manager = intval($manager);
-        $query = "SELECT leaves.id as leave_id, users.*, leaves.*, types.name as type_label, status.name as status_name, types.name as type_name, lastchange.date as change_date, requested.date as request_date
+    public function getLeavesRequestedToManagerWithHistory($manager, $all = FALSE){
+      $this->load->model('delegations_model');
+      $manager = intval($manager);
+      $query="SELECT leaves.id as leave_id, users.*, leaves.*, types.name as type_label, status.name as status_name, types.name as type_name, lastchange.date as change_date, requested.date as request_date
         FROM `leaves`
         inner join status ON leaves.status = status.id
         inner join types ON leaves.type = types.id
@@ -1457,29 +1502,28 @@ class Leaves_model extends CI_Model {
           WHERE leaves_history.status = 2
           GROUP BY id
         ) requested ON leaves.id = requested.id";
-        //Case of manager having delegations
-        $ids = $this->delegations_model->listManagersGivingDelegation($manager);
-        if (count($ids) > 0) {
-            array_push($ids, $manager);
-            $query .= " WHERE users.manager IN (" . implode(",", $ids) . ")";
-        } else {
-            $query .= " WHERE users.manager = $manager";
-        }
-        if ($all == FALSE) {
-            $query .= " AND (leaves.status = " . LMS_REQUESTED .
+      //Case of manager having delegations
+      $ids = $this->delegations_model->listManagersGivingDelegation($manager);
+      if (count($ids) > 0) {
+        array_push($ids, $manager);
+        $query .= " WHERE users.manager IN (" . implode(",", $ids) . ")";
+      } else {
+        $query .= " WHERE users.manager = $manager";
+      }
+      if ($all == FALSE) {
+        $query .= " AND (leaves.status = " . LMS_REQUESTED .
                 " OR leaves.status = " . LMS_CANCELLATION . ")";
-        }
-        $query = $query . " order by leaves.startdate DESC;";
-        $this->db->query('SET SQL_BIG_SELECTS=1');
-        return $this->db->query($query)->result_array();
+      }
+      $query=$query . " order by leaves.startdate DESC;";
+      $this->db->query('SET SQL_BIG_SELECTS=1');
+      return $this->db->query($query)->result_array();
     }
 
-    public function getSubLeavesRequestedToManagerWithHistory($manager, $all = FALSE, $id)
-    {
-
+    public function getSubLeavesRequestedToManagerWithHistory($manager, $all = FALSE, $id){
+        
         $this->load->model('delegations_model');
         $manager = intval($manager);
-        $query = "SELECT leaves.id as leave_id, leaves.parent_leave_id as leave_parent, users.*, leaves.*, types.name as type_label, status.name as status_name, types.name as type_name, lastchange.date as change_date, requested.date as request_date
+        $query="SELECT leaves.id as leave_id, leaves.parent_leave_id as leave_parent, users.*, leaves.*, types.name as type_label, status.name as status_name, types.name as type_name, lastchange.date as change_date, requested.date as request_date
           FROM `leaves`
           inner join status ON leaves.status = status.id
           inner join types ON leaves.type = types.id
@@ -1499,40 +1543,36 @@ class Leaves_model extends CI_Model {
         //$query .= " WHERE leave_parent = $id";
         $ids = $this->delegations_model->listManagersGivingDelegation($manager);
         if (count($ids) > 0) {
-            array_push($ids, $manager);
-            $query .= " WHERE users.manager IN (" . implode(",", $ids) . ")";
+          array_push($ids, $manager);
+          $query .= " WHERE users.manager IN (" . implode(",", $ids) . ")";
         } else {
-            $query .= " WHERE users.manager = $manager";
+          $query .= " WHERE users.manager = $manager";
         }
         if ($all == FALSE) {
-            $query .= " AND (leaves.status = " . LMS_REQUESTED .
-                " OR leaves.status = " . LMS_CANCELLATION . ")";
+          $query .= " AND (leaves.status = " . LMS_REQUESTED .
+                  " OR leaves.status = " . LMS_CANCELLATION . ")";
         }
         //$query .= " AND WHERE (leaves.parent_leave_id = $id)";
-        $query = $query . " order by leaves.startdate DESC;";
+        $query=$query . " order by leaves.startdate DESC;";
         $this->db->query('SET SQL_BIG_SELECTS=1');
-        function array_filt($array, $filterValue)
-        {
-            $thisarray = array();
-            foreach ($array as $value)
-                if (
+        function array_filt($array, $filterValue){
+            $thisarray = array ();
+            foreach($array as $value)
+                if(
                     $value['parent_leave_id'] == $filterValue
                 )
-                    $thisarray[] = $value;
+                $thisarray[] = $value;
             return $thisarray;
         }
-
         $req = $this->db->query($query)->result_array();
         $tab = array_filt($req, $id);
         return $tab;
-    }
-
-    public function getSubLeavesDetailsRequestedToManagerWithHistory($manager, $all = FALSE, $id)
-    {
-
+      }
+      public function getSubLeavesDetailsRequestedToManagerWithHistory($manager, $all = FALSE, $id){
+        
         $this->load->model('delegations_model');
         $manager = intval($manager);
-        $query = "SELECT leaves.id as leave_id, leaves.parent_leave_id as leave_parent, users.*, leaves.*, types.name as type_label, status.name as status_name, types.name as type_name, lastchange.date as change_date, requested.date as request_date
+        $query="SELECT leaves.id as leave_id, leaves.parent_leave_id as leave_parent, users.*, leaves.*, types.name as type_label, status.name as status_name, types.name as type_name, lastchange.date as change_date, requested.date as request_date
           FROM `leaves`
           inner join status ON leaves.status = status.id
           inner join types ON leaves.type = types.id
@@ -1552,45 +1592,38 @@ class Leaves_model extends CI_Model {
         //$query .= " WHERE leave_parent = $id";
         $ids = $this->delegations_model->listManagersGivingDelegation($manager);
         if (count($ids) > 0) {
-            array_push($ids, $manager);
-            $query .= " WHERE users.manager IN (" . implode(",", $ids) . ")";
+          array_push($ids, $manager);
+          $query .= " WHERE users.manager IN (" . implode(",", $ids) . ")";
         } else {
-            $query .= " WHERE users.manager = $manager";
+          $query .= " WHERE users.manager = $manager";
         }
         if ($all == FALSE) {
-            $query .= " AND (leaves.status = " . LMS_ACCEPTED .
-                " OR leaves.status = " . LMS_REJECTED . ")";
+          $query .= " AND (leaves.status = " . LMS_ACCEPTED .
+                  " OR leaves.status = " . LMS_REJECTED . ")";
         }
         //$query .= " AND WHERE (leaves.parent_leave_id = $id)";
-        $query = $query . " order by leaves.startdate DESC;";
+        $query=$query . " order by leaves.startdate DESC;";
         $this->db->query('SET SQL_BIG_SELECTS=1');
-        function array_filt($array, $filterValue)
-        {
-            $thisarray = array();
-            foreach ($array as $value)
-                if (
+        function array_filt($array, $filterValue){
+            $thisarray = array ();
+            foreach($array as $value)
+                if(
                     $value['parent_leave_id'] == $filterValue
                 )
-                    $thisarray[] = $value;
+                $thisarray[] = $value;
             return $thisarray;
         }
-
         $req = $this->db->query($query)->result_array();
         $tab = array_filt($req, $id);
         return $tab;
     }
-
     /**
-     * Count leave requests submitted to the
-     * connected user (or if delegate of a
-     * manager)
+     * Count leave requests submitted to the connected user (or if delegate of a manager)
      * @param int $manager connected user
      * @return int number of requests
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function countLeavesRequestedToManager($manager)
-    {
+    public function countLeavesRequestedToManager($manager) {
         $this->load->model('delegations_model');
         $ids = $this->delegations_model->listManagersGivingDelegation($manager);
         $this->db->select('count(*) as number', FALSE);
@@ -1862,7 +1895,10 @@ class Leaves_model extends CI_Model {
         $floorDate = DateTime::createFromFormat('Y-m-d H:i:s', $start . ' 00:00:00');
 
         $this->load->model('dayoffs_model');
+        
         foreach ($events as $entry) {
+            //$entry->startdate = null;
+            //$entry->enddate = null;
             //Hide forbidden entries in calendars
             if ($calendar) {
                 //Don't display rejected and cancel* leave requests for other employees
@@ -1877,14 +1913,30 @@ class Leaves_model extends CI_Model {
 
             //Note that $eventStartDate and $eventEndDate are related to the leave request event
             //But $startDate and $endDate are the first and last days being displayed on the calendar
-            $eventStartDate = DateTime::createFromFormat('Y-m-d H:i:s', $entry->startdate . ' 00:00:00');
-            $startDate = clone $eventStartDate;
-            if ($startDate < $floorDate) $startDate = $floorDate;
-            $iDate = clone $startDate;
-            $eventEndDate = DateTime::createFromFormat('Y-m-d H:i:s', $entry->enddate . ' 00:00:00');
-            $endDate = clone $eventEndDate;
-            if ($endDate > $limitDate) $endDate = $limitDate;
-
+            if ($entry->free_day) {
+                $dateEndCurrent = new DateTime($entry->enddate);
+                $dateEndCurrent->modify('+1 day');
+                $period = new DatePeriod(
+                    new DateTime($entry->startdate),
+                    new DateInterval('P1D'),
+                    $dateEndCurrent
+                );
+                foreach ($period as $key => $value) {
+                        if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $entry->free_day) {
+                            $eventStartDate = DateTime::createFromFormat('Y-m-d H:i:s', $value->format('Y-m-d') . ' 00:00:00');
+                            $eventEndDate = DateTime::createFromFormat('Y-m-d H:i:s', $value->format('Y-m-d') . ' 00:00:00');
+                        }
+                    }
+                }else{
+                    $eventStartDate = DateTime::createFromFormat('Y-m-d H:i:s', $entry->startdate . ' 00:00:00');
+                    $eventEndDate = DateTime::createFromFormat('Y-m-d H:i:s', $entry->enddate . ' 00:00:00');
+                }
+            
+                $startDate = clone $eventStartDate;
+                if ($startDate < $floorDate) $startDate = $floorDate;
+                $iDate = clone $startDate;
+                $endDate = clone $eventEndDate;
+                if ($endDate > $limitDate) $endDate = $limitDate;
             //Iteration between 2 dates
             while ($iDate <= $endDate)
             {
@@ -1925,7 +1977,7 @@ class Leaves_model extends CI_Model {
                 //Last day of a long leave request
                 if (!$oneDay && $last_day && $end_afternoon) $display = '1';
                 if (!$oneDay && $last_day && $end_morning) $display = '2';
-
+                
                 //Check if another leave was defined on this day
                 if ($user->days[$dayNum]->display != '4') { //Except full day off
                     if ($user->days[$dayNum]->display != 0) { //Overlapping with a day off or another request
@@ -1946,17 +1998,18 @@ class Leaves_model extends CI_Model {
                     } else  {   //All day entry
                         $user->days[$dayNum]->id = $entry->id;
                         $user->days[$dayNum]->type = $entry->type;
-                        $user->days[$dayNum]->display = $display;
+                        $user->days[$dayNum]->display = isset($display) ? $display : null;
                         $user->days[$dayNum]->status = $entry->status;
                         $user->days[$dayNum]->acronym = $entry->acronym;
                     }
+                    
                 }
+                
                 $iDate->modify('+1 day');   //Next day
             }
         }
         return $user;
     }
-
     /**
      * List all duplicated leave requests (exact same dates, status, etc.)
      * Note: this doesn't detect overlapping requests.

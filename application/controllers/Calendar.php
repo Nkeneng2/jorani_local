@@ -82,6 +82,7 @@ class Calendar extends CI_Controller {
         $data['help'] = $this->help->create_help_link('global_link_doc_page_calendar_yearly');
         $userEl = $this->users_model->getUsers($this->session->userdata('id'));
         $data['contract'] = $userEl['contract'];
+        //echo "<script>console.log('Debug Objects: " . json_encode($this->leaves_model->linear($employee, 6, $year, TRUE, TRUE, TRUE, TRUE)) . "' );</script>";
         $this->load->view('templates/header', $data);
         $this->load->view('menu/index', $data);
         $this->load->view('calendar/year', $data);
@@ -89,15 +90,11 @@ class Calendar extends CI_Controller {
     }
 
     /**
-     * Display the page of the individual
-     * calendar (of the connected user) Data
-     * (calendar events) is retrieved by AJAX
-     * from leaves' controller
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * Display the page of the individual calendar (of the connected user)
+     * Data (calendar events) is retrieved by AJAX from leaves' controller
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function individual()
-    {
+    public function individual() {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
         $this->auth->checkIfOperationIsAllowed('individual_calendar');
@@ -116,15 +113,12 @@ class Calendar extends CI_Controller {
     }
 
     /**
-     * Display the page of the team calendar
-     * (users having the same manager than the
-     * connected user) Data (calendar events) is
-     * retrieved by AJAX from leaves' controller
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * Display the page of the team calendar (users having the same manager
+     * than the connected user)
+     * Data (calendar events) is retrieved by AJAX from leaves' controller
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function workmates()
-    {
+    public function workmates() {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
         $this->auth->checkIfOperationIsAllowed('workmates_calendar');
@@ -140,15 +134,11 @@ class Calendar extends CI_Controller {
     }
 
     /**
-     * Display the calendar of the employees
-     * managed by the connected user Data
-     * (calendar events) is retrieved by AJAX
-     * from leaves' controller
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * Display the calendar of the employees managed by the connected user
+     * Data (calendar events) is retrieved by AJAX from leaves' controller
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function collaborators()
-    {
+    public function collaborators() {
         setUserContext($this);
         $this->lang->load('calendar', $this->language);
         $this->auth->checkIfOperationIsAllowed('collaborators_calendar');

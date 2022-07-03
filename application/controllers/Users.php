@@ -333,7 +333,7 @@ class Users extends CI_Controller {
             $this->load->view('users/create', $data);
             $this->load->view('templates/footer');
         } else {
-
+            
             $password = $this->users_model->setUsers();
 
             //Send an e-mail to the user so as to inform that its account has been created

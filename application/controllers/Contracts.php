@@ -31,13 +31,10 @@ class Contracts extends CI_Controller {
     }
 
     /**
-     * Display the list of all contracts defined
-     * in the system
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * Display the list of all contracts defined in the system
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function index()
-    {
+    public function index() {
         $this->auth->checkIfOperationIsAllowed('list_contracts');
         $this->lang->load('datatable', $this->language);
         $data = getUserContext($this);
@@ -90,7 +87,7 @@ class Contracts extends CI_Controller {
             }
             $data['defaultType'] = $defaultType;
             $userEl = $this->users_model->getUsers($this->session->userdata('id'));
-            $data['contract'] = $userEl['contract'];
+            //$data['contract'] = $userEl['contract'];
             $this->load->view('templates/header', $data);
             $this->load->view('menu/index', $data);
             $this->load->view('contracts/edit', $data);
@@ -100,6 +97,7 @@ class Contracts extends CI_Controller {
             $this->session->set_flashdata('msg', lang('contract_edit_msg_success'));
             redirect('contracts');
         }
+        
     }
 
     /**

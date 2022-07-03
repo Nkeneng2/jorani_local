@@ -30,11 +30,9 @@ class Positions extends CI_Controller {
 
     /**
      * Display list of positions
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function index()
-    {
+    public function index() {
         $this->auth->checkIfOperationIsAllowed('list_positions');
         $data = getUserContext($this);
         $this->lang->load('datatable', $this->language);

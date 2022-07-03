@@ -28,15 +28,11 @@ class Organization extends CI_Controller {
     }
 
     /**
-     * Main view that allows to describe the
-     * entities of the organization And to attach
-     * employees to entities (lot of Ajax
-     * callbacks)
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * Main view that allows to describe the entities of the organization
+     * And to attach employees to entities (lot of Ajax callbacks)
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function index()
-    {
+    public function index() {
         setUserContext($this);
         $this->auth->checkIfOperationIsAllowed('organization_index');
         $data = getUserContext($this);
@@ -160,7 +156,7 @@ class Organization extends CI_Controller {
         $id = $this->input->get('id', TRUE);
         $this->load->model('organization_model');
         $employees = $this->organization_model->employees($id)->result();
-
+        
         //Prepare an object that will be encoded in JSON
         $msg = new \stdClass();
         $msg->draw = 1;
@@ -180,7 +176,7 @@ class Organization extends CI_Controller {
             ->set_content_type('application/json')
             ->set_output(json_encode($msg));
     }
-
+    
     /**
      * Ajax endpoint: Add an employee to an entity of the organization
      * takes parameters by GET

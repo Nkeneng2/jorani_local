@@ -55,6 +55,7 @@ $currentDay = (int)date('d');
 
   $monthNumber = 0;
   foreach ($months as $month_name => $month) {
+    //echo "<script>console.log('Debug Objects: " . json_encode($month) . "' );</script>";
     $monthNumber++;
     $isCurrentMonth = $currentMonth === $monthNumber;
 
@@ -118,7 +119,7 @@ $currentDay = (int)date('d');
     <tr>
         <?php //Iterate so as to display all afternoons
         foreach ($month->days as $dayNumber => $day) {
-
+            
             $isCurrentDay =  $isCurrentYear && $isCurrentMonth && $currentDay === $dayNumber;
             $class = '';
             if($isCurrentDay){

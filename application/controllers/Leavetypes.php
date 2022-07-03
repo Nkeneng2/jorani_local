@@ -28,11 +28,9 @@ class LeaveTypes extends CI_Controller {
 
     /**
      * Display the list of leave types
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function index()
-    {
+    public function index() {
         $this->auth->checkIfOperationIsAllowed('leavetypes_list');
         $data = getUserContext($this);
         $data['leavetypes'] = $this->types_model->getTypes();
@@ -91,10 +89,10 @@ class LeaveTypes extends CI_Controller {
             $this->load->view('leavetypes/edit', $data);
         } else {
             $this->types_model->updateTypes($id,
-                $this->input->post('name'),
-                $this->input->post('deduct_days_off'),
-                $this->input->post('acronym'),
-                $this->input->post('auto_confirm'));
+                    $this->input->post('name'),
+                    $this->input->post('deduct_days_off'),
+                    $this->input->post('acronym'),
+                    $this->input->post('auto_confirm'));
             $this->session->set_flashdata('msg', lang('leavetypes_popup_update_flash_msg'));
             redirect('leavetypes');
         }

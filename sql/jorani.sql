@@ -62,9 +62,9 @@ BEGIN
     WHILE queue_length > 0 DO
         IF queue_length = 1 THEN
             SET front_id = CAST(queue AS INT);
-            SET queue = '';
+          
         ELSE
-            SET pos = LOCATE(',',queue);
+            SET pos = LOCATE('',queue);
             SET front_id = CAST(SUBSTR(queue, 1, pos-1) AS INT);
             SET q = SUBSTR(queue,pos + 1); 
             SET queue = q;
@@ -258,6 +258,10 @@ CREATE TABLE IF NOT EXISTS `leaves` (
   `enddatetype` varchar(12) DEFAULT NULL COMMENT 'Morning/Afternoon',
   `duration` decimal(10,3) DEFAULT NULL COMMENT 'Length of the leave request',
   `type` int(11) DEFAULT NULL COMMENT 'Identifier of the type of the leave request (Paid, Sick, etc.). See type table.',
+  `free_day` enum('monday','tuesday','wednesday','thursday','friday') DEFAULT NULL COMMENT 'Day off of the week',
+  `parent_leave_id` int(11) DEFAULT NULL COMMENT 'id of the request father',
+  `parent_leave` BOOLEAN DEFAULT NULL COMMENT 'field that tells if the leave is a parent or not',
+  `sub_leaves_treated` BOOLEAN DEFAULT NULL COMMENT 'field that tells if this parent request has any child requests left to process',
   `comments` TEXT NULL DEFAULT NULL COMMENT 'Comments on leave request (JSon)',
   `document` BLOB NULL COMMENT 'Optional supporting document',
   PRIMARY KEY (`id`),
@@ -358,6 +362,7 @@ CREATE TABLE IF NOT EXISTS `types` (
   `name` varchar(128) NOT NULL COMMENT 'Name of the leave type',
   `acronym` VARCHAR(10) NULL DEFAULT NULL COMMENT 'Acronym of the leave type',
   `deduct_days_off` BOOL NOT NULL DEFAULT 0 COMMENT 'Deduct days off when computing the balance of the leave type',
+  `auto_confirm` BOOL NOT NULL DEFAULT 0 COMMENT 'Determine whether the type of request should be self-confirmed or not',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='List of leave types (LoV table)' AUTO_INCREMENT=6 ;
 
@@ -447,6 +452,10 @@ CREATE TABLE IF NOT EXISTS `leaves_history` (
   `enddatetype` varchar(12) DEFAULT NULL,
   `duration` decimal(10,2) DEFAULT NULL,
   `type` int(11) DEFAULT NULL,
+  `free_day` enum('monday','tuesday','wednesday','thursday','friday') DEFAULT NULL COMMENT 'Day off of the week',
+  `parent_leave_id` int(11) DEFAULT NULL COMMENT 'id of the request father',
+  `parent_leave` BOOLEAN DEFAULT NULL COMMENT 'field that tells if the leave is a parent or not',
+  `sub_leaves_treated` BOOLEAN DEFAULT NULL COMMENT 'field that tells if this parent request has any child requests left to process',
   `comments` TEXT NULL DEFAULT NULL COMMENT 'Comments on leave request',
   `document` BLOB NULL COMMENT 'Optional supporting document',
   `change_id` int(11) NOT NULL AUTO_INCREMENT,

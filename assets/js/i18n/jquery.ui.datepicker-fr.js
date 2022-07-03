@@ -19,6 +19,7 @@ jQuery(function($){
 		dateFormat: 'dd/mm/yy',
 		firstDay: 1,
 		isRTL: false,
+		
 		showMonthAfterYear: false,
 		yearSuffix: ''};
 	$.datepicker.setDefaults($.datepicker.regional['fr']);

@@ -33,13 +33,10 @@ class Extra extends CI_Controller {
     }
 
     /**
-     * Display the list of the overtime requests
-     * by the connected employee
-     * @author Benjamin BALET
-     *     <benjamin.balet@gmail.com>
+     * Display the list of the overtime requests by the connected employee
+     * @author Benjamin BALET <benjamin.balet@gmail.com>
      */
-    public function index()
-    {
+    public function index() {
         $this->auth->checkIfOperationIsAllowed('list_extra');
         $data = getUserContext($this);
         $this->lang->load('datatable', $this->language);

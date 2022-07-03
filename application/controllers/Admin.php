@@ -14,7 +14,7 @@ if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
  * In Jorani the settings are set into a configuration file and not into DB.
  */
 class Admin extends CI_Controller {
-
+    
     /**
      * Default constructor
      * @author Benjamin BALET <benjamin.balet@gmail.com>
@@ -26,7 +26,7 @@ class Admin extends CI_Controller {
         $this->lang->load('admin', $this->language);
         $this->load->model('users_model');
     }
-
+    
     /**
      * Display the settings of the system (extract of config.php)
      * @author Benjamin BALET <benjamin.balet@gmail.com>
@@ -41,7 +41,7 @@ class Admin extends CI_Controller {
         $this->load->view('admin/settings', $data);
         $this->load->view('templates/footer');
     }
-
+    
     /**
      * Display the diagnostic of the content (duplicated requests, etc.) and configuration
      * @author Benjamin BALET <benjamin.balet@gmail.com>
@@ -66,8 +66,8 @@ class Admin extends CI_Controller {
         $data['overlappingLeaves'] = $this->leaves_model->detectOverlappingProblems();
         $userEl = $this->users_model->getUsers($this->session->userdata('id'));
         $data['contract'] = $userEl['contract'];
-
-        //Count the number of items (will be used for badges in tab
+        
+        //Count the number of items (will be used for badges in tab 
         $data['duplicatedLeaves_count'] = count($data['duplicatedLeaves']);
         $data['wrongDateType_count'] = count($data['wrongDateType']);
         $data['entitlmentOverflow_count'] = count($data['entitlmentOverflow']);
@@ -86,7 +86,7 @@ class Admin extends CI_Controller {
         $this->load->view('admin/diagnostic', $data);
         $this->load->view('templates/footer');
     }
-
+    
     /**
      * Display the list of OAuth clients
      * @author Benjamin BALET <benjamin.balet@gmail.com>
@@ -154,7 +154,7 @@ class Admin extends CI_Controller {
             }
         }
     }
-
+    
     /**
      * purgeAccessTokens
      * @author Benjamin BALET <benjamin.balet@gmail.com>
@@ -165,7 +165,7 @@ class Admin extends CI_Controller {
         $this->oauthclients_model->purgeAccessTokens();
         redirect('admin/oauthclients#sessions');
     }
-
+    
     /**
      * Output a QRCode containing the URL of the Jorani instance and the e-mail of the connected user
      * @author Benjamin BALET <benjamin.balet@gmail.com>
