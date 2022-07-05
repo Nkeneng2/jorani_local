@@ -71,6 +71,7 @@ class Requests extends CI_Controller {
         $this->load->model('types_model');
         $this->lang->load('datatable', $this->language);
         $this->load->helper('form');
+        $userEl = $this->users_model->getUsers($this->session->userdata('id'));
         $data['filter'] = $filter;
         $data['id_parent_leave'] = $id;
         $data['title'] = lang('requests_index_title');
@@ -96,7 +97,7 @@ class Requests extends CI_Controller {
               $data['showAll'] = $showAll;
               $data['flash_partial_view'] = $this->load->view('templates/flash', $data, TRUE);
         }
-        
+        $data['contract'] = $userEl['contract'];
         $this->load->view('templates/header', $data);
         $this->load->view('menu/index', $data);
         $this->load->view('requests/view_sub_request', $data);

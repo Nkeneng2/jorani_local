@@ -1085,8 +1085,31 @@ class Leaves_model extends CI_Model {
                 case 3: $color = '#468847'; break;  // Accepted
                 case 4: $color = '#ff0000'; break;  // Rejected
             }
-
-            $jsonevents[] = array(
+            if ($entry->free_day) {
+                $dateEndCurrent = new DateTime($enddate);
+                $dateEndCurrent->modify('+1 day');
+                $period = new DatePeriod(
+                    new DateTime($startdate),
+                    new DateInterval('P1D'),
+                    $dateEndCurrent
+                );
+                foreach ($period as $key => $value) {
+                    if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $entry->free_day) {
+                        $jsonevents[] = array(
+                            'id' => $entry->id,
+                            'title' => $entry->firstname .' ' . $entry->lastname,
+                            'imageurl' => $imageUrl,
+                            'start' => $value->format('Y-m-d'),
+                            'color' => $color,
+                            'allDay' => $allDay,
+                            'end' => $value->format('Y-m-d'),
+                            'startdatetype' => $startdatetype,
+                            'enddatetype' => $enddatetype
+                        );
+                    }      
+                    }
+            }else{
+                $jsonevents[] = array(
                 'id' => $entry->id,
                 'title' => $entry->firstname .' ' . $entry->lastname,
                 'imageurl' => $imageUrl,
@@ -1097,6 +1120,8 @@ class Leaves_model extends CI_Model {
                 'startdatetype' => $startdatetype,
                 'enddatetype' => $enddatetype
             );
+            }
+            
         }
         return json_encode($jsonevents);
     }

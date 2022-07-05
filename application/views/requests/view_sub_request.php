@@ -123,8 +123,22 @@ if ($showAll == FALSE) {
             </div>
         </td>
         <td><?php echo $request['firstname'] . ' ' . $request['lastname']; ?></td>
-        <td style = "<?php echo $request['free_day'] ? 'background:#D9FCD8' : ''; ?>" data-order="<?php echo $tmpStartDate; ?>"><?php echo $request['free_day'] ? $startdate : $startdate . ' (' . lang($request['startdatetype']). ')'; ?></td>
-        <td data-order="<?php echo$tmpEndDate; ?>"><?php echo $request['free_day'] ? $enddate : $enddate . ' (' . lang($request['enddatetype']) . ')'; ?></td>
+        <?php if ($request['free_day']) {
+            $dateEndCurrent = new DateTime($request['enddate']);
+            $dateEndCurrent->modify('+1 day');
+            $period = new DatePeriod(
+                new DateTime($request['startdate']),
+                new DateInterval('P1D'),
+                $dateEndCurrent
+            );
+            foreach ($period as $key => $value) {
+                if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $request['free_day']) {
+                    $freeday = $value->format('d/m/Y');
+                }      
+            }
+        } ?>
+        <td style = "<?php echo $request['free_day'] ? 'background:#D9FCD8' : ''; ?>" data-order="<?php echo $tmpStartDate; ?>"><?php echo $freeday; ?></td>
+        <td data-order="<?php echo$tmpEndDate; ?>"><?php echo $freeday; ?></td>
         <td class="text-center"><?php echo $request['free_day'] ? lang($request['free_day']) : 'x'; ?></td>
         <td class="text-center"><?php echo $request['free_day'] ? 'x' : $request['duration']; ?></td>
         <td><?php echo $request['type_name']; ?></td>
