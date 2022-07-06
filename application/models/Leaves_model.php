@@ -1107,7 +1107,7 @@ class Leaves_model extends CI_Model {
                             'enddatetype' => $enddatetype
                         );
                     }      
-                    }
+                }
             }else{
                 $jsonevents[] = array(
                 'id' => $entry->id,
