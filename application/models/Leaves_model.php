@@ -1927,6 +1927,7 @@ class Leaves_model extends CI_Model {
             //$entry->startdate = null;
             //$entry->enddate = null;
             //Hide forbidden entries in calendars
+            //echo "<script>console.log('Debug Objects: " . json_encode($entry) . "' );</script>";
             if ($calendar) {
                 //Don't display rejected and cancel* leave requests for other employees
                 if (($entry->employee != $this->session->userdata('id')) &&
@@ -1992,6 +1993,7 @@ class Leaves_model extends CI_Model {
 
                 //Length of leave request is one day long
                 if ($oneDay && $start_morning && $end_afternoon) $display = '1';
+                if ($oneDay && !$start_morning && !$end_afternoon) $display = '1';
                 if ($oneDay && $start_morning && $end_morning) $display = '2';
                 if ($oneDay && $start_afternoon && $end_afternoon) $display = '3';
                 if ($oneDay && $start_afternoon && $end_morning) $display = '9';
@@ -2035,6 +2037,7 @@ class Leaves_model extends CI_Model {
                 $iDate->modify('+1 day');   //Next day
             }
         }
+        //echo "<script>console.log('Debug Objects: " . json_encode($user) . "' );</script>";
         return $user;
     }
     /**
