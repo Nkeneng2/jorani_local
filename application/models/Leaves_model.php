@@ -906,8 +906,9 @@ class Leaves_model extends CI_Model {
                     new DateInterval('P1D'),
                     $dateEndCurrent
                 );
+                //echo "<script>console.log('Debug Objects: " . $period . "' );</script>";
                 foreach ($period as $key => $value) {
-                    if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $entry->free_day) {
+                    if (strtolower(date('l', strtotime($value->format('Y-m-d')))) === $entry->free_day && $entry->parent_leave_id) {
                         $jsonevents[] = array(
                             'id' => $entry->id,
                             'title' => $entry->type,
@@ -920,6 +921,7 @@ class Leaves_model extends CI_Model {
                             'startdatetype' => $startdatetype,
                             'enddatetype' => $enddatetype
                         );
+                        break;
                     }      
                     }
                 }else{
@@ -1001,7 +1003,7 @@ class Leaves_model extends CI_Model {
                     $dateEndCurrent
                 );
                 foreach ($period as $key => $value) {
-                    if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $entry->free_day) {
+                    if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $entry->free_day  && $entry->parent_leave_id) {
                         $jsonevents[] = array(
                             'id' => $entry->id,
                             'title' => $entry->firstname .' ' . $entry->lastname,
@@ -1094,7 +1096,7 @@ class Leaves_model extends CI_Model {
                     $dateEndCurrent
                 );
                 foreach ($period as $key => $value) {
-                    if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $entry->free_day) {
+                    if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $entry->free_day  && $entry->parent_leave_id) {
                         $jsonevents[] = array(
                             'id' => $entry->id,
                             'title' => $entry->firstname .' ' . $entry->lastname,
@@ -1107,7 +1109,7 @@ class Leaves_model extends CI_Model {
                             'enddatetype' => $enddatetype
                         );
                     }      
-                    }
+                }
             }else{
                 $jsonevents[] = array(
                 'id' => $entry->id,
@@ -1231,7 +1233,7 @@ class Leaves_model extends CI_Model {
                     $dateEndCurrent
                 );
                 foreach ($period as $key => $value) {
-                    if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $entry->free_day) {
+                    if (strtolower(date('l', strtotime($value->format('Y-m-d')))) == $entry->free_day  && $entry->parent_leave_id) {
                         $jsonevents[] = array(
                             'id' => $entry->id,
                             'title' => $title,
