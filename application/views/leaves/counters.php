@@ -85,20 +85,20 @@ if ($language_code != 'en') { ?>
 <?php } ?>
 
 <script type="text/javascript">
-/**
- * Converts a local date to an ISO compliant string
- * Because toISOString converts to UTC causing one day
- * of shift in some zones
- * @param Date $d JavaScript native date object
- */
-function toISODateLocal(d) {
-  var z = n => (n<10? '0':'')+n;
-  return d.getFullYear() + '-' + z(d.getMonth()+1) + '-' + z(d.getDate()); 
-}
+    /**
+     * Converts a local date to an ISO compliant string
+     * Because toISOString converts to UTC causing one day
+     * of shift in some zones
+     * @param Date $d JavaScript native date object
+     */
+    function toISODateLocal(d) {
+        var z = n => (n < 10 ? '0' : '') + n;
+        return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate());
+    }
 
-$(function () {
-    //Init datepicker widget (it is complicated because we cannot based it on UTC)
-    var isDefault = <?php echo $isDefault;?>;
+    $(function () {
+        //Init datepicker widget (it is complicated because we cannot based it on UTC)
+        var isDefault = <?php echo $isDefault;?>;
     var reportDate = '<?php $date = new DateTime($refDate); echo $date->format(lang('global_date_format'));?>';
     var dateFormat = { year: 'numeric', month: 'numeric', day: 'numeric' };
     var now = new Date();
@@ -117,8 +117,8 @@ $(function () {
         url = "<?php echo base_url();?>leaves/counters/" + isoDate;
         window.location = url;
     });
-        
-    //Display tooltips
+
+        //Display tooltips
     $("[ data-toggle=tooltip]").tooltip({ placement: 'top'});
 });
 </script>
